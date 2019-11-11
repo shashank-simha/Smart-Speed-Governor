@@ -1,11 +1,15 @@
 from threading import Thread
 import time
+import requests
+import random
 
 global speed
 global flag # implementation of mutex
-speed = 0.0
 
+speed = 0.0
 flag = 0
+
+URL = "http://localhost/speed/index.php"
 
 def GetMaxSpeed():
     global flag
@@ -14,8 +18,17 @@ def GetMaxSpeed():
         while(flag == 1):
             pass
         flag = 1
-        print("Got the speed from server")
-        speed = 0
+        
+        current_lat = round(random.uniform(11.2, 16.2), 4)
+        current_lon = round(random.uniform(75.3, 89.1), 4)
+        print("Current latitude: %s\tCurrent longitude: %s" %(current_lat, current_lon))
+
+        PARAMS = {'lat': current_lat, 'lon': current_lon}
+        r = requests.get(url = URL, params = PARAMS)
+        data = r.json() 
+
+        speed = data
+        print("Received new speed limit from Remote Server, %s Kmph" % (speed))
         flag = 0
         time.sleep(5)
 
