@@ -38,8 +38,12 @@ def GetMaxSpeed():
         r = requests.get(url = URL, params = PARAMS)
         data = r.json() 
 
-        speed = data
-        print("Received new speed limit from Remote Server, %s Kmph" % (speed))
+        if data == -1:
+            print("Speed Data not available for the given location")
+            speed = 0
+        else:
+            speed = data
+            print("Received new speed limit from Remote Server, %s Kmph" % (speed))
         flag = 0
         time.sleep(5)
 
