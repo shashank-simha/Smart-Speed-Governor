@@ -9,7 +9,7 @@ global flag # implementation of mutex
 speed = 0.0
 flag = 0
 
-URL = "http://localhost/speed/index.php"
+URL = "http://18.218.244.52/index.php"
 
 def GetMaxSpeed():
     global flag
