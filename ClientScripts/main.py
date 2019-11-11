@@ -54,7 +54,7 @@ def SetMaxSpeed():
         while(flag == 1):
             pass
         flag = 1
-        print("Setting the PWM value at %f%", (speed * 2)) # min: 0 kmph -> 0%  max: 50 kmph -> 100%
+        print("Setting the PWM value at " + str(speed * 2) + "%") # min: 0 kmph -> 0%  max: 50 kmph -> 100%
         pi_pwm.ChangeDutyCycle(speed * 2) # provide duty cycle in the range 0-100
         # code
         flag = 0
