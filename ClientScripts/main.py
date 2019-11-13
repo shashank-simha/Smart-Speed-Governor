@@ -34,6 +34,8 @@ URL = "http://18.218.244.52/index.php"
 def GetMaxSpeed():
     global flag
     global max_speed
+    global current_speed
+
     while True:
         while(flag == 1):
             pass
@@ -53,6 +55,9 @@ def GetMaxSpeed():
         else:
             max_speed = data
             print("Received new speed limit from Remote Server, %s Kmph" % (max_speed))
+            if current_speed > max_speed:
+                current_speed = max_speed
+                
         flag = 0
         time.sleep(5)
 
