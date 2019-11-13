@@ -25,7 +25,7 @@ def setup():
     pi_pwm.start(0)				# start PWM of required Duty Cycle 
 
 
-max_speed = 9999.0
+max_speed = 50.0
 current_speed = 0.0
 flag = 0
 
@@ -49,7 +49,7 @@ def GetMaxSpeed():
 
         if data == -1:
             print("Speed Data not available for the given location")
-            max_speed = 9999 # some high value
+            max_speed = 50 # some high value (in this case 50 since we are using 100% dutycycle for 50Kmph)
         else:
             max_speed = data
             print("Received new speed limit from Remote Server, %s Kmph" % (max_speed))
