@@ -9,7 +9,14 @@ import random
 ledpin = 12				# PWM pin connected to LED
 button = 16             # Push button 
 
+
+global max_speed
+global current_speed
+global flag # implementation of mutex
+global pi_pwm
+
 def setup():
+    global pi_pwm
     GPIO.setwarnings(False)			# disable warnings
     GPIO.setmode(GPIO.BOARD)		# set pin numbering systemGPIO.setup(ledpin,GPIO.OUT)
     GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP) # setup input pin with pull up config
@@ -18,11 +25,7 @@ def setup():
     pi_pwm.start(0)				# start PWM of required Duty Cycle 
 
 
-global max_speed
-global current_speed
-global flag # implementation of mutex
-
-max_speed = 0.0
+max_speed = 9999.0
 current_speed = 0.0
 flag = 0
 
@@ -57,6 +60,8 @@ def ControlSpeed():
     global flag
     global max_speed
     global current_speed
+    global pi_pwm
+
     while True:
         while(flag == 1):
             pass
