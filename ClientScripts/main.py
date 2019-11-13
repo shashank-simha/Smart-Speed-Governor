@@ -12,7 +12,8 @@ button = 16             # Push button
 def setup():
     GPIO.setwarnings(False)			# disable warnings
     GPIO.setmode(GPIO.BOARD)		# set pin numbering systemGPIO.setup(ledpin,GPIO.OUT)
-    GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)) # setup input pin with pull up config
+    GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP) # setup input pin with pull up config
+    GPIO.setup(ledpin,GPIO.OUT)
     pi_pwm = GPIO.PWM(ledpin,1000)		# create PWM instance with frequency
     pi_pwm.start(0)				# start PWM of required Duty Cycle 
 
@@ -74,7 +75,6 @@ def ControlSpeed():
             
         time.sleep(0.01) # 10ms delay
         
-setup() # call setup function
 
 GetMaxSpeedThread = Thread(target=GetMaxSpeed)
 GetMaxSpeedThread.start()
@@ -83,5 +83,6 @@ ControlSpeedThread = Thread(target=ControlSpeed)
 ControlSpeedThread.start()
 
 if __name__ == "__main__":
+    setup() # call setup function
     while (1):
         pass
