@@ -7,24 +7,29 @@ import random
 
 
 ledpin = 12				# PWM pin connected to LED
-GPIO.setwarnings(False)			#disable warnings
-GPIO.setmode(GPIO.BOARD)		#set pin numbering system
-GPIO.setup(ledpin,GPIO.OUT)
-pi_pwm = GPIO.PWM(ledpin,1000)		#create PWM instance with frequency
-pi_pwm.start(0)				#start PWM of required Duty Cycle 
+button = 16             # Push button 
+
+def setup():
+    GPIO.setwarnings(False)			# disable warnings
+    GPIO.setmode(GPIO.BOARD)		# set pin numbering systemGPIO.setup(ledpin,GPIO.OUT)
+    GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)) # setup input pin with pull up config
+    pi_pwm = GPIO.PWM(ledpin,1000)		# create PWM instance with frequency
+    pi_pwm.start(0)				# start PWM of required Duty Cycle 
 
 
-global speed
+global max_speed
+global current_speed
 global flag # implementation of mutex
 
-speed = 0.0
+max_speed = 0.0
+current_speed = 0.0
 flag = 0
 
 URL = "http://18.218.244.52/index.php"
 
 def GetMaxSpeed():
     global flag
-    global speed
+    global max_speed
     while True:
         while(flag == 1):
             pass
@@ -40,31 +45,35 @@ def GetMaxSpeed():
 
         if data == -1:
             print("Speed Data not available for the given location")
-            speed = 0
+            max_speed = 9999 # some high value
         else:
-            speed = data
-            print("Received new speed limit from Remote Server, %s Kmph" % (speed))
+            max_speed = data
+            print("Received new speed limit from Remote Server, %s Kmph" % (max_speed))
         flag = 0
         time.sleep(5)
 
-def SetMaxSpeed():
+def ControlSpeed():
     global flag
-    global speed
+    global max_speed
+    global current_speed
     while True:
         while(flag == 1):
             pass
-        flag = 1
-        print("Setting the PWM value at " + str(speed * 2) + "%") # min: 0 kmph -> 0%  max: 50 kmph -> 100%
-        pi_pwm.ChangeDutyCycle(speed * 2) # provide duty cycle in the range 0-100
-        # code
-        flag = 0
-        time.sleep(1)
+        
+        button_state = GPIO.input(button)
+        if  button_state == False:
+            print('Button Pressed...')
+            time.sleep(0.01) # 10ms delay
+        else:
+            pass
+        
+setup() # call setup function
 
 GetMaxSpeedThread = Thread(target=GetMaxSpeed)
 GetMaxSpeedThread.start()
 
-SetMaxSpeedThread = Thread(target=SetMaxSpeed)
-SetMaxSpeedThread.start()
+ControlSpeedThread = Thread(target=ControlSpeed)
+ControlSpeedThread.start()
 
 if __name__ == "__main__":
     while (1):
