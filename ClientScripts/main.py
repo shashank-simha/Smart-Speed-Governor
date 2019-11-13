@@ -58,7 +58,8 @@ def GetMaxSpeed():
             if current_speed > max_speed:
                 while current_speed != max_speed:
                     current_speed -= 1 # decelerate gradually
-                
+                    time.sleep(0.01) # 10ms delay
+                    
         flag = 0
         time.sleep(5)
 
