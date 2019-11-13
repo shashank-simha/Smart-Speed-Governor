@@ -74,7 +74,8 @@ def ControlSpeed():
             else:
                 print("Cannot accelerate beyond max_speed")
         else:
-            current_speed -= 1
+            if current_speed > 0:
+                current_speed -= 1
         
         pi_pwm.ChangeDutyCycle(current_speed * 2) # provide duty cycle in the range 0-100
             
