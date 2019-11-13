@@ -39,8 +39,8 @@ def GetMaxSpeed():
             pass
         flag = 1
         
-        current_lat = round(random.uniform(11.2, 16.2), 4)
-        current_lon = round(random.uniform(75.3, 89.1), 4)
+        current_lat = 13
+        current_lon = 78
         print("Current latitude: %s\tCurrent longitude: %s" %(current_lat, current_lon))
 
         PARAMS = {'lat': current_lat, 'lon': current_lon}
