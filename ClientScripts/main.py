@@ -61,11 +61,18 @@ def ControlSpeed():
             pass
         
         button_state = GPIO.input(button)
+        
         if  button_state == False:
-            print('Button Pressed...')
-            time.sleep(0.01) # 10ms delay
+            if current_speed < max_speed:
+                current_speed += 1
+            else:
+                print("Cannot accelerate beyond max_speed")
         else:
-            pass
+            current_speed -= 1
+        
+        pi_pwm.ChangeDutyCycle(current_speed * 2) # provide duty cycle in the range 0-100
+            
+        time.sleep(0.01) # 10ms delay
         
 setup() # call setup function
 
