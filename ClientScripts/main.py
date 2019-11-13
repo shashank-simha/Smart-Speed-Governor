@@ -77,6 +77,12 @@ def ControlSpeed():
             if current_speed > 0:
                 current_speed -= 1
         
+        dutycycle = current_speed * 2 # map # Speed to PWM dutycycle (min: 0 kmph -> 0%  max: 50 kmph -> 100%)
+        if dutycycle < 0:
+            dutycycle = 0
+        else if dutycycle > 100:
+            dutycycle = 100            
+        pi_pwm.ChangeDutyCycle(dutycycle) # provide duty cycle in the range 0-100
         pi_pwm.ChangeDutyCycle(current_speed * 2) # provide duty cycle in the range 0-100
             
         time.sleep(0.01) # 10ms delay
